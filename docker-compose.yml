@@ -1,0 +1,26 @@
+version: "3"
+services:
+    web: 
+      # looking for Dockerfile in the current directory
+      #build: .
+
+      build:
+        context: .
+        dockerfile: Dockerfile.dev
+        
+      ports: 
+        - "3000:3000"
+      volumes:
+        # node_modules in the container is not necessary for mapping
+        # this is created by Dockerfile in the container
+        - /app/node_modules
+        - .:/app
+
+    tests:
+      build:
+        context: .
+        dockerfile: Dockerfile.dev
+      volumes:
+        - /app/node_modules
+        - .:/app
+      command: ["npm","run","test"]
